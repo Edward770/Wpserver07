@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WhatsApp Tool - Login</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, textarea, button, select { display: block; margin: 10px 0; padding: 10px; width: 100%; }
+    #sender, #log, #welcome { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Form -->
+  <div id="login">
+    <h2>Login</h2>
+    <input id="username" placeholder="Enter username" />
+    <input id="password" type="password" placeholder="Enter password" />
+    <button onclick="checkLogin()">Login</button>
+    <p id="loginError" style="color: red;"></p>
+  </div>
+
+  <!-- Welcome Message -->
+  <div id="welcome">
+    <h2 id="welcomeMessage"></h2>
+  </div>
+
+  <!-- WhatsApp Sender -->
+  <div id="sender">
+    <label>Target Type</label>
+    <select id="targetType">
+      <option value="number">Number</option>
+    </select>
+
+    <label>Phone Number (with country code)</label>
+    <input id="target" placeholder="e.g. 919876543210" />
+
+    <label>Message</label>
+    <textarea id="message" placeholder="Type your message..."></textarea>
+
+    <label>Delay Between Messages (seconds)</label>
+    <input id="delay" type="number" value="5" />
+
+    <button onclick="startSending()">Run</button>
+    <button onclick="stopSending()">Stop</button>
+
+    <div id="log"></div>
+  </div>
+
+  <script>
+    let sending = false;
+
+    function checkLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (password === 'Hardik077') {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('welcomeMessage').innerText = `Welcome, ${username}!`;
+        document.getElementById('welcome').style.display = 'block';
+        document.getElementById('sender').style.display = 'block';
+      } else {
+        document.getElementById('loginError').innerText = 'Incorrect password!';
+      }
+    }
+
+    function startSending() {
+      const target = document.getElementById('target').value;
+      const message = document.getElementById('message').value;
+      const delay = parseInt(document.getElementById('delay').value) * 1000;
+      const log = document.getElementById('log');
+
+      if (!target || !message) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      sending = true;
+      log.innerText = 'Sending message...';
+
+      setTimeout(() => {
+        if (!sending) return;
+        const url = `https://wa.me/${target}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+        log.innerText = 'Message opened in WhatsApp.';
+      }, delay);
+    }
+
+    function stopSending() {
+      sending = false;
+      document.getElementById('log').innerText = 'Stopped.';
+    }
+  </script>
+</body>
+</html>
