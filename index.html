@@ -27,13 +27,11 @@
 
   <!-- WhatsApp Sender -->
   <div id="sender">
-    <label>Target Type</label>
-    <select id="targetType">
-      <option value="number">Number</option>
-    </select>
+    <label>Your WhatsApp Number (Sender)</label>
+    <input id="senderNumber" placeholder="e.g. 919812345678" />
 
-    <label>Phone Number (with country code)</label>
-    <input id="target" placeholder="e.g. 919876543210" />
+    <label>Target WhatsApp Number</label>
+    <input id="targetNumber" placeholder="e.g. 919876543210" />
 
     <label>Message</label>
     <textarea id="message" placeholder="Type your message..."></textarea>
@@ -65,30 +63,31 @@
     }
 
     function startSending() {
-      const target = document.getElementById('target').value;
-      const message = document.getElementById('message').value;
+      const sender = document.getElementById('senderNumber').value.trim();
+      const target = document.getElementById('targetNumber').value.trim();
+      const message = document.getElementById('message').value.trim();
       const delay = parseInt(document.getElementById('delay').value) * 1000;
       const log = document.getElementById('log');
 
-      if (!target || !message) {
+      if (!sender || !target || !message) {
         alert('Please fill in all fields.');
         return;
       }
 
       sending = true;
-      log.innerText = 'Sending message...';
+      log.innerText = `Preparing to send from ${sender} to ${target}...`;
 
       setTimeout(() => {
         if (!sending) return;
         const url = `https://wa.me/${target}?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');
-        log.innerText = 'Message opened in WhatsApp.';
+        log.innerText = `Message sent from ${sender} to ${target}.`;
       }, delay);
     }
 
     function stopSending() {
       sending = false;
-      document.getElementById('log').innerText = 'Stopped.';
+      document.getElementById('log').innerText = 'Sending stopped.';
     }
   </script>
 </body>
